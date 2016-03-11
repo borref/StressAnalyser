@@ -1,0 +1,314 @@
+doctype html
+html
+	head
+		title Calculador de esfuerzos
+		meta charset="utf-8" /
+		/! Add CSS
+		link rel="stylesheet" type="text/css" href="semantic/out/semantic.min.css"
+		link rel="stylesheet" type="text/css" media="screen" href="stylesheets/screen.css"
+	body.ui.container
+		header
+			h1.ui.header
+				img.ui.image src="images/norte.png"
+				.content
+					|Calculador de esfuerzos
+					.sub.header
+						strong Por Jose Duque Felfle
+
+		section
+			h2 Form
+			form.ui.form data-bind="submit: calculate"
+				.description.fields
+					.twelve.wide.field
+						label Descripción proyecto
+						input type="text" name="description"
+					.two.wide.field
+						label Unidades
+						select.ui.fluid.dropdown data-bind="options: availableUnits,
+																								optionsText: 'text',
+																								value: selectedUnit,
+																								event: {change: setUnits},
+																								optionsCaption: 'Unidad'" name="UnitType"
+					.two.wide.field
+						label !
+						button.ui.fluid.animated.green.submit.button type="submit"
+							.visible.content
+								i.calculator.icon
+							.hidden.content
+								|Calcular
+				.ui.stackable.grid
+					.eleven.wide.column
+						.ui.teal.segment
+							h4.ui.dividing.header DATOS INICIALES
+							.three.fields
+								.field
+									label
+										|Espesor de losa&nbsp;&nbsp;
+										span data-bind="text: longUnit"
+									input type="text" name="espesorLosa"
+								.field
+									label
+										|Módulo de elasticidad&nbsp;&nbsp;
+										span data-bind="text: presionUnit"
+									input type="text" name="moduloElasticidad"
+								.field
+									label Relación de Poisson
+									input type="text" name="relacionPoisson"
+							.three.fields
+								.field
+									label
+										|Módulo de reacción de la subrasante&nbsp;&nbsp;
+										span data-bind="text: densidadUnit"
+									input type="text" name="moduloReaccion"
+								.field
+									label
+										|Carga semieje&nbsp;&nbsp;
+										span data-bind="text: pesoUnit"
+									input type="text" name="cargaSemieje"
+								.field
+									label
+										|Largo de la losa (dimensión mayor)&nbsp;&nbsp;
+										span data-bind="text: longUnit"
+									input type="text" name="largoLosaMayor"
+							.three.fields
+								.field
+									label
+										|Largo de la losa (dimensión menor)&nbsp;&nbsp;
+										span data-bind="text: longUnit"
+									input type="text" name="largoLosaMenor"
+								.field
+									label
+										|Coeficiente de dilatación térmica&nbsp;&nbsp;
+										span data-bind="text: tempUnit"
+									input type="text" name="coeficienteDilatacion"
+								.field
+									label
+										|Gradiente de temperatura&nbsp;&nbsp;
+										span data-bind="text: tempUnit"
+									input type="text" name="gradienteTemperatura"
+							.three.fields
+								.field
+									label
+										|Densidad del concreto&nbsp;&nbsp;
+										span data-bind="text: densidadUnit"
+									input type="text" name="densidadConcreto"
+								.field
+									label Coeficiente de fricción losa/suelo
+									input type="text" name="coeficienteFriccion"
+								.field
+									label
+										|Radio de contacto&nbsp;&nbsp;
+										span data-bind="text: longUnit"
+									input type="text" name="radioContacto"
+							.three.fields
+								.field
+									label
+										|Resistencia del concreto a compresión&nbsp;&nbsp;
+										span data-bind="text: presionUnit"
+									input type="text" name="resistenciaConcreto"
+					.four.wide.right.floated.column
+						.ui.teal.segment
+							h4.ui.dividing.header CÁLCULO RADIO DE CONTACTO
+							.field
+								label
+									|Presión inflado&nbsp;&nbsp;
+									span data-bind="text: presionUnit"
+								input type="text" name="presionInflado"
+							.field
+								label
+									|Carga semieje&nbsp;&nbsp;
+									span data-bind="text: pesoUnit"
+								input type="text" name="cargaSemiejeII"
+							.field
+								label
+									|Radio de contacto calculado&nbsp;&nbsp;
+									span data-bind="text: longUnit"
+								input type="text" readonly="" name="radioContactoCalc"
+				.ui.stackable.grid
+					.five.wide.column
+						.ui.teal.segment
+							h4.ui.dividing.header ESFUERZO DE ALABEO
+							.two.fields
+								.field
+									label Lx/l
+									input type="text" readonly="" name="lx"
+								.field
+									label Ly/l
+									input type="text" readonly="" name="ly"
+							.two.fields
+								.field
+									label Cx
+									input type="text" readonly="" name="cx"
+								.field
+									label Cy
+									input type="text" readonly="" name="cy"
+							.ui.divider
+							.field
+								label Esfuerzo de borde
+								.two.fields
+									.field
+										label
+											|Largo&nbsp;&nbsp;
+											span data-bind="text: presionUnit"
+										input type="text" readonly="" name="esfuerzoBordeLargo"
+									.field
+										label
+											|Ancho&nbsp;&nbsp;
+											span data-bind="text: presionUnit"
+										input type="text" readonly="" name="esfuerzoBordeAncho"
+							.ui.divider
+							.field
+								label Esfuerzo interior
+								.two.fields
+									.field
+										label
+											|Largo&nbsp;&nbsp;
+											span data-bind="text: presionUnit"
+										input type="text" readonly="" name="esfuerzoInteriorLargo"
+									.field
+										label
+											|Ancho&nbsp;&nbsp;
+											span data-bind="text: presionUnit"
+										input type="text" readonly="" name="esfuerzoInteriorAncho"
+					.seven.wide.column
+						.ui.teal.segment
+							h4.ui.dividing.header ESFUERZO EN LA ESQUINA
+							.fields
+								.inline.field
+									label
+										|Radio rigidez relativa&nbsp;&nbsp;
+										span data-bind="text: longUnit"
+									input type="text" readonly="" name="radioRigRel"
+							.ui.divider
+							.field
+								label Westergaard (1924)
+								.fields
+									.four.wide.field
+										label
+											|Esfuerzo&nbsp;&nbsp;
+											span data-bind="text: presionUnit"
+										input type="text" readonly="" name="esfuerzoWester"
+									.four.wide.field
+										label
+											|Deflexión&nbsp;&nbsp;
+											span data-bind="text: longUnit"
+										input type="text" readonly="" name="deflexionWester"
+									.five.wide.field
+										label
+											|Máx momento a (d)&nbsp;&nbsp;
+											span data-bind="text: longUnit"
+										input type="text" readonly="" name="maxMomentoWester"
+							.ui.divider
+							.field
+								label Loannides (1985)
+								.fields
+									.four.wide.field
+										label
+											|Esfuerzo&nbsp;&nbsp;
+											span data-bind="text: presionUnit"
+										input type="text" readonly="" name="esfuerzoLoann"
+									.four.wide.field
+										label
+											|Deflexión&nbsp;&nbsp;
+											span data-bind="text: longUnit"
+										input type="text" readonly="" name="deflexionLoann"
+									.five.wide.field
+										label
+											|Máx momento a (d)&nbsp;&nbsp;
+											span data-bind="text: longUnit"
+										input type="text" readonly="" name="maxMomentoLoann"
+									.three.wide.field
+										label
+											|C&nbsp;&nbsp;
+											span data-bind="text: longUnit"
+										input type="text" readonly="" name="cLoann"
+					.four.wide.column
+						.ui.teal.segment
+							h4.ui.dividing.header ESFUERZO INTERIOR
+							.field
+								label
+									|b&nbsp;&nbsp;
+									span data-bind="text: longUnit"
+								input type="text" readonly="" name="b"
+							.field
+								label
+									|Esfuerzo&nbsp;&nbsp;
+									span data-bind="text: presionUnit"
+								input type="text" readonly="" name="esfuerzo"
+							.field
+								label
+									|Deflexión&nbsp;&nbsp;
+									span data-bind="text: longUnit"
+								input type="text" readonly="" name="deflexion"
+				.ui.stackable.grid
+					.five.wide.column
+						.ui.teal.segment
+							h4.ui.dividing.header ESFUERZO EN EL BORDE
+							.field
+								label Círculo
+								.two.fields
+									.field
+										label
+											|Esfuerzo&nbsp;&nbsp;
+											span data-bind="text: presionUnit"
+										input type="text" readonly="" name="esfuerzoCirculo"
+									.field
+										label
+											|Deflexión&nbsp;&nbsp;
+											span data-bind="text: longUnit"
+										input type="text" readonly="" name="deflexionCirculo"
+							.ui.divider
+							.field
+								label Semicírculo
+								.two.fields
+									.field
+										label
+											|Esfuerzo&nbsp;&nbsp;
+											span data-bind="text: presionUnit"
+										input type="text" readonly="" name="esfuerzoSemicirculo"
+									.field
+										label
+											|Deflexión&nbsp;&nbsp;
+											span data-bind="text: longUnit"
+										input type="text" readonly="" name="deflexionSemicirculo"
+					.six.wide.column
+						.ui.teal.segment
+							h4.ui.dividing.header ESFUERZO A TRACCIÓN DEL CONCRETO
+							.inline.field
+								label
+									|Resistencia del concreto a comprensión&nbsp;&nbsp;
+									span data-bind="text: presionUnit"
+								input type="text" readonly="" name="resistenciaConcretoTraccion"
+							.fields
+								.twelve.wide.field
+									label
+										|Resistencia a la tracción del concreto (3√f'c)&nbsp;&nbsp;
+										span data-bind="text: presionUnit"
+									input type="text" readonly="" name="resConcreto3"
+								.four.wide.field
+									label ¿Cumple?
+									input type="text" readonly="" name="resConcreto3Cumple"
+							.fields
+								.twelve.wide.field
+									label
+										|Resistencia a la tracción del concreto (5√f'c)&nbsp;&nbsp;
+										span data-bind="text: presionUnit"
+									input type="text" readonly="" name="resConcreto5"
+								.four.wide.field
+									label ¿Cumple?
+									input type="text" readonly="" name="resConcreto5Cumple"
+					.five.wide.column
+						.ui.teal.segment
+							h4.ui.dividing.header ESFUERZO DE FRICCIÓN
+							.field
+								label
+									|Esfuerzo de fricción máximo teórico&nbsp;&nbsp;
+									span data-bind="text: presionUnit"
+								input type="text" readonly="" name="esfuerzoFriccion"
+		footer
+			p Desarrollado por Jose Duque Felfle, 2016
+
+		script src="javascripts/jquery/jquery-2.1.4.min.js"
+		script src="semantic/out/semantic.min.js"
+		script src="javascripts/knockout.js"
+		script src="javascripts/viewmodels/main.js"
